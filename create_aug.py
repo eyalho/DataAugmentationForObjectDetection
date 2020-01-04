@@ -146,7 +146,9 @@ if __name__ == "__main__":
                 img = cv2.imread(img_path)[:, :, ::-1]  # OpenCV uses BGR channels
                 bboxes = create_bboxes(anns)
 
-                img, bboxes = do_augmentation(img, bboxes)
+                # on first loop save images as is
+                if index != 0:
+                    img, bboxes = do_augmentation(img, bboxes)
 
                 # save image to aug dir
                 aug_name = "aug" + str(index) + img_name
