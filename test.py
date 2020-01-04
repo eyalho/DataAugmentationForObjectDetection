@@ -16,3 +16,5 @@ transforms = Sequence([RandomHorizontalFlip(1), RandomScale(0.2, diff = True), R
 img, bboxes = transforms(img, bboxes)
 
 plt.imshow(draw_rect(img, bboxes))
+
+cv2.imwrite("saved_new_img.jpg", img)
