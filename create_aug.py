@@ -124,20 +124,22 @@ def do_augmentation(img, bboxes):
 if __name__ == "__main__":
 
     buses_dir = "busesTrain"
-    aug_buses_dir = "augBusesTrain"
-    aug_box_buses_dir = "augRecBusesTrain"
+    aug_buses_dir = "augmentationTrain"
+    aug_box_buses_dir = "with_boxes"
     if not os.path.exists(aug_buses_dir):
         os.makedirs(aug_buses_dir)
-    if not os.path.exists(aug_box_buses_dir):
-        os.makedirs(aug_box_buses_dir)
+    if not os.path.exists(os.path.join(aug_buses_dir, aug_box_buses_dir)):
+        os.makedirs(os.path.join(aug_buses_dir, aug_box_buses_dir))
+    if not os.path.exists(os.path.join(aug_buses_dir, buses_dir)):
+        os.makedirs(os.path.join(aug_buses_dir, buses_dir))
 
-    annotations_file_aug = "aug_annotationsTrain.txt"
+    annotations_file_aug = os.path.join(aug_buses_dir, "aug_annotationsTrain.txt")
     annotations_file_gt ="annotationsTrain.txt"
 
     tags_dict = create_tag_dicts(annotations_file_gt)
 
     with open(annotations_file_aug, "w") as augAnnFile:
-        for index in range(100):
+        for index in range(50):
             for img_name in tags_dict:
                 anns = tags_dict[img_name]
                 img_path = os.path.join(buses_dir, img_name)
@@ -148,12 +150,12 @@ if __name__ == "__main__":
 
                 # save image to aug dir
                 aug_name = "aug" + str(index) + img_name
-                aug_img_path = os.path.join(aug_buses_dir, aug_name)
+                aug_img_path = os.path.join(aug_buses_dir, buses_dir, aug_name)
                 cv2.imwrite(aug_img_path, img)
                 print(aug_img_path)
 
                 # save image with boxes to augRec dir (for validating they are on the right place by looking..)
-                aug_rec_img_path = os.path.join(aug_box_buses_dir, aug_name)
+                aug_rec_img_path = os.path.join(aug_buses_dir, aug_box_buses_dir, aug_name)
                 cv2.imwrite(aug_rec_img_path, draw_rect(img, bboxes))
                 print(aug_rec_img_path)
 
