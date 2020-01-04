@@ -83,7 +83,7 @@ def create_line(pic_name, bboxes):
     first = True
     for bbox in bboxes:
         x0, y0, x1, y1, label = bbox[0], bbox[1], bbox[2], bbox[3], bbox[4]
-        # x0, y0, x1, y1 = int(x0), int(y0), int(x1), int(y1)
+        x0, y0, x1, y1 = int(x0), int(y0), int(x1), int(y1)
         if first:
             box_str = f"[{x0},{y0},{x1 - x0},{y1 - y0},{label}]"
             first = False
@@ -133,8 +133,8 @@ if __name__ == "__main__":
     if not os.path.exists(os.path.join(aug_buses_dir, buses_dir)):
         os.makedirs(os.path.join(aug_buses_dir, buses_dir))
 
-    annotations_file_aug = os.path.join(aug_buses_dir, "aug_annotationsTrain.txt")
     annotations_file_gt ="annotationsTrain.txt"
+    annotations_file_aug = os.path.join(aug_buses_dir, annotations_file_gt)
 
     tags_dict = create_tag_dicts(annotations_file_gt)
 
