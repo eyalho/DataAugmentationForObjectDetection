@@ -120,48 +120,41 @@ def do_augmentation(img, bboxes):
     img, bboxes = transforms(img, bboxes)
     return img, bboxes
 
-
-if __name__ == "__main__":
-
-    buses_dir = "busesTrain"
-    aug_buses_dir = "augmentationTrain"
-    aug_box_buses_dir = "with_boxes"
-    if not os.path.exists(aug_buses_dir):
-        os.makedirs(aug_buses_dir)
-    if not os.path.exists(os.path.join(aug_buses_dir, aug_box_buses_dir)):
-        os.makedirs(os.path.join(aug_buses_dir, aug_box_buses_dir))
-    if not os.path.exists(os.path.join(aug_buses_dir, buses_dir)):
-        os.makedirs(os.path.join(aug_buses_dir, buses_dir))
-
-    annotations_file_gt ="annotationsTrain.txt"
-    annotations_file_aug = os.path.join(aug_buses_dir, annotations_file_gt)
-
-    tags_dict = create_tag_dicts(annotations_file_gt)
-
-    with open(annotations_file_aug, "w") as augAnnFile:
+def run(root_folder):
+    buses_dir = "buses"
+    ann_filename = "annotations.txt"
+    buses_path = os.path.join(root_folder, buses_dir)
+    ann_path = os.path.join(root_folder, ann_filename)
+    print(buses_path)
+    print(ann_path)
+    tags_dict = create_tag_dicts(ann_path)
+    with open(ann_path, "a") as AnnFile:
         for index in range(50):
             for img_name in tags_dict:
                 anns = tags_dict[img_name]
                 img_path = os.path.join(buses_dir, img_name)
-                img = cv2.imread(img_path)  # OpenCV uses BGR channels
+                img = cv2.imread(img_path)  # OpenCV uses RGB channels
                 bboxes = create_bboxes(anns)
 
-                # on first loop save images as is
-                if index != 0:
-                    img, bboxes = do_augmentation(img, bboxes)
+                img, bboxes = do_augmentation(img, bboxes)
 
                 # save image to aug dir
                 aug_name = "aug" + str(index) + img_name
-                aug_img_path = os.path.join(aug_buses_dir, buses_dir, aug_name)
+                aug_img_path = os.path.join(buses_path, aug_name)
                 cv2.imwrite(aug_img_path, img)
                 print(aug_img_path)
 
                 # save image with boxes to augRec dir (for validating they are on the right place by looking..)
-                aug_rec_img_path = os.path.join(aug_buses_dir, aug_box_buses_dir, aug_name)
-                cv2.imwrite(aug_rec_img_path, draw_rect(img, bboxes))
-                print(aug_rec_img_path)
+                # aug_rec_img_path = os.path.join(aug_box_buses_dir, aug_name)
+                # cv2.imwrite(aug_rec_img_path, draw_rect(img, bboxes))
+                # print(aug_rec_img_path)
 
                 # write boxes to aug_annotation file
                 line = create_line(aug_name, bboxes)
-                augAnnFile.write(line)
+                AnnFile.write(line)
                 print(line)
+
+if __name__ == "__main__":
+    run("train")
+    run("test")
+
