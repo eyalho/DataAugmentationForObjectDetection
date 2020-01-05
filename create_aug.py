@@ -107,7 +107,7 @@ def do_augmentation(img, bboxes):
     scale_arg = 0.3
     trans_arg = 0.1
     rotation_arg = 10
-    shear_arg = 0.1
+    # shear_arg = 0.1
 
     ### NOITCE: we can resize easily with Resize(square_size)
     # The square_size to this augmentation is the side of the square.
@@ -115,7 +115,7 @@ def do_augmentation(img, bboxes):
     transforms = Sequence([RandomHorizontalFlip(flip_p),
                            RandomScale(scale_arg, diff=True),
                            RandomTranslate(trans_arg, diff=True),
-                           RandomShear(shear_arg),
+                           # RandomShear(shear_arg),
                            RandomRotate(rotation_arg)])
     img, bboxes = transforms(img, bboxes)
     return img, bboxes
