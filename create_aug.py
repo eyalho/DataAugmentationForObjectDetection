@@ -128,11 +128,12 @@ def run(root_folder):
     print(buses_path)
     print(ann_path)
     tags_dict = create_tag_dicts(ann_path)
+    print(tags_dict)
     with open(ann_path, "a") as AnnFile:
         for index in range(50):
             for img_name in tags_dict:
                 anns = tags_dict[img_name]
-                img_path = os.path.join(buses_dir, img_name)
+                img_path = os.path.join(buses_path, img_name)
                 img = cv2.imread(img_path)  # OpenCV uses RGB channels
                 bboxes = create_bboxes(anns)
 
