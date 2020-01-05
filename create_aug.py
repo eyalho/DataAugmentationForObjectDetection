@@ -147,8 +147,8 @@ if __name__ == "__main__":
                 bboxes = create_bboxes(anns)
 
                 # on first loop save images as is
-                if index != 0:
-                    img, bboxes = do_augmentation(img, bboxes)
+                # if index != 0:
+                img, bboxes = do_augmentation(img, bboxes)
 
                 # save image to aug dir
                 aug_name = "aug" + str(index) + img_name
